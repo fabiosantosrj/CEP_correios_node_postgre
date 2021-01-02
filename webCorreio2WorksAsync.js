@@ -5,7 +5,7 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "cep",
-  password: "senhadobanco",
+  password: "sup0rte",
   port: "5432"
 });
 
@@ -215,7 +215,9 @@ function doRequest(options, data, cep) {
         });
 
         res.on('end', () => {
-          resolve(JSON.parse(responseBody));
+          //check return is json, if error return to catch
+          let retval = JSON.parse(responseBody);
+          resolve(retval);
         });
       });
 
@@ -280,8 +282,8 @@ function runMany() {
   }*/
 
   //Dividir 1Mio para cada thread
-  for (var i = 1000000; i<=99999999; i= i+1500000) {  
-     doSomethingUseful(i,i+1500000);
+  for (var i = 1000000; i<=99999999; i= i+10900) {  
+     doSomethingUseful(i,i+10900);
    }
   doSomethingUseful(99599999, 99999999);
 
