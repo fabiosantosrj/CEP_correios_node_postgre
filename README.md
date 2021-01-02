@@ -1,4 +1,4 @@
-# CEP_correios_node_postgre
+# CEP_correios_node_postgreSQL
 consulta cep diretamente no correio e armazena em db local
 
 
