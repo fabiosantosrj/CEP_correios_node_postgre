@@ -19,13 +19,14 @@ async function doSomethingUseful(nStart, nEnd) {
   console.log(nStart + ' ate ' + nEnd);
   for (var i = nStart; i <= nEnd; i++) {//todo possivel intervalo da capital
     var cep = ('000000000' + i).slice(-8); // '11
-    console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}`);
 
     //Verifica se já foi consultdo esta registrado na DB!
     const need_registred = await checkCepAtDb(cep);
 
     //If cep was registered, skip this register
     if (need_registred) {
+      console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}`);
+
       //console.log(`===============BUSCANDO CEP: ${cep}`);
 
       //Prepara a URL
@@ -57,6 +58,8 @@ async function doSomethingUseful(nStart, nEnd) {
         console.log("=====================================buscando novamente cep: " + cep)
         doSomethingUseful((i), (i));
       }
+    }else{
+      console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}...`);
     }
   }
 }
@@ -86,14 +89,9 @@ async function registerStatus(cep) {
   return new Promise((resolve, reject) => {
     try {
       var queryString = `INSERT INTO ceptable(
-        cep,logradouro,complemento,bairro,cidade,estado,exist_no_ws,data_consulta
+        cep,exist_no_ws,data_consulta
         ) VALUES(
-          '${cep}',
-          ' ',
-          ' ',
-          ' ',
-          ' ',
-          ' ','NAO',CURRENT_TIMESTAMP
+          '${cep}','NAO',CURRENT_TIMESTAMP
         )`
 
       pool.query(queryString, (err, res) => {
@@ -141,14 +139,14 @@ async function registerDB(data, cep) {
         }
 
         var queryString = `INSERT INTO ceptable(
-        cep,logradouro,complemento,bairro,cidade,estado,exist_no_ws,data_consulta
+        cep,logradouro,complemento,bairro,cidade,estado,exist_no_ws,data_consulta,nome_unidade,tipo_cep
         ) VALUES(
           '${cepUni.cep}',
           '${endereco}',
           '${conplemento}',
           '${cepUni.bairro}',
           '${cepUni.localidade}',
-          '${cepUni.uf}','SIM',CURRENT_TIMESTAMP
+          '${cepUni.uf}','SIM',CURRENT_TIMESTAMP,'${cepUni.nomeUnidade}','${cepUni.tipoCep}'
         )`
 
         pool.query(queryString, (err, res) => {
@@ -216,8 +214,12 @@ function doRequest(options, data, cep) {
 
         res.on('end', () => {
           //check return is json, if error return to catch
-          let retval = JSON.parse(responseBody);
-          resolve(retval);
+          try{
+            let retval = JSON.parse(responseBody);
+            resolve(retval);
+          }catch{
+            console.log("============================================erro json cep: " + cep)
+          }
         });
       });
 
@@ -240,7 +242,7 @@ function doRequest(options, data, cep) {
 function runMany() {
   var interval = [
     //[1000000,19999999],//SP Espectro	1000000 a 19999999
-    [1019545, 5999999],//SP Capital 1000000 a 5999999
+    [1000000, 5999999],//SP Capital 1000000 a 5999999
     [6000000, 8000000],//SP Área Metropolitana 6000000 a 8000000
     [8000000, 9999999],//SP Capital 8000000 a 9999999
     [10000000, 11999999],//SP Litoral	10000000 a 11999999
@@ -275,17 +277,18 @@ function runMany() {
     [80000000, 87999999],//PR Espectro	80000000 a 87999999
     [88000000, 89999999],//SC Espectro	88000000 a 89999999
     [90000000, 99999999],//RS Espectro	90000000 a 99999999
-    [99999989, 99999999]//RS Espectro	90000000 a 99999999
+    [99989989, 99999999]//RS Espectro	90000000 a 99999999
   ]
-  /*for (const cepUni of interval) {  
-    doSomethingUseful(cepUni[0],cepUni[1]);
-  }*/
 
+ /* for (const cepUni of interval) {  
+    doSomethingUseful(cepUni[0],cepUni[1]);
+  }
+*/
   //Dividir 1Mio para cada thread
-  for (var i = 1000000; i<=99999999; i= i+10900) {  
-     doSomethingUseful(i,i+10900);
+  for (var i = 1; i<=99999999; i= i+151590) {  
+     doSomethingUseful(i,i+151590);
    }
-  doSomethingUseful(99599999, 99999999);
+  doSomethingUseful(9991999, 99999999);
 
 
 }
