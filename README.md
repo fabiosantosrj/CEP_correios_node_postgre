@@ -21,6 +21,8 @@ Para rodar será necessário:
     complemento character varying,
     exist_no_ws character varying, -- CEP exist no WS do correio?
     data_consulta timestamp(0) without time zone,
+    nome_unidade character varying, -- NOme da Unidade/predio
+    tipo_cep character varying, -- Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade
     CONSTRAINT ceptable_pk PRIMARY KEY (cep)
     )
     WITH (
@@ -29,16 +31,8 @@ Para rodar será necessário:
     ALTER TABLE ceptable
     OWNER TO postgres;
     COMMENT ON COLUMN ceptable.exist_no_ws IS 'CEP exist no WS do correio?';
-
-
-    -- Index: ceptable_cep_idx
-
-    -- DROP INDEX ceptable_cep_idx;
-
-    CREATE INDEX ceptable_cep_idx
-    ON ceptable
-    USING btree
-    (cep COLLATE pg_catalog."default");
+    COMMENT ON COLUMN ceptable.nome_unidade IS 'NOme da Unidade/predio';
+    COMMENT ON COLUMN ceptable.tipo_cep IS 'Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade';
 
 
 -para executar, digitar no terminal 
