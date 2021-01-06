@@ -38,5 +38,5 @@ Para rodar será necessário:
 -para executar, digitar no terminal 
 node webCorreio2WorksAsync.js
 
-agauardar... esse processo irá varrer todos so cep possiveis do correio e armazenar na tabela local, isso demorará varios dias...
+agauardar... esse processo irá varrer todos os possiveis CEP do correio e armazenar na tabela local, isso demorará varios dias...
 
