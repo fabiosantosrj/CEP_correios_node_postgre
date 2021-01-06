@@ -2,7 +2,6 @@
 consulta cep diretamente no correio e armazena em db local
 
 
-
 Para rodar será necessário:
 -Banco de dados Postgres Instalado
 -criar dabase "cep"
