@@ -55,12 +55,12 @@ async function doSomethingUseful(nStart, nEnd) {
           //console.log(retun);
         }
       } catch {
-        console.log("=====================================buscando novamente cep: " + cep)
+        //console.log("=====================================buscando novamente cep: " + cep)
         doSomethingUseful((i), (i));
       }
-    }else{
+    }/*else{
       console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}...`);
-    }
+    }*/
   }
 }
 
@@ -280,13 +280,13 @@ function runMany() {
     [99989989, 99999999]//RS Espectro	90000000 a 99999999
   ]
 
- /* for (const cepUni of interval) {  
+  for (const cepUni of interval) {  
     doSomethingUseful(cepUni[0],cepUni[1]);
   }
-*/
+
   //Dividir 1Mio para cada thread
-  for (var i = 1; i<=99999999; i= i+151590) {  
-     doSomethingUseful(i,i+151590);
+  for (var i = 1; i<=99999999; i= i+147990) {  
+     doSomethingUseful(i,i+147990);
    }
   doSomethingUseful(9991999, 99999999);
 
