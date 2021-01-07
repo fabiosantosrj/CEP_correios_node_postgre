@@ -288,7 +288,8 @@ function runMany() {
   for (var i = 1; i<=99999999; i= i+147990) {  
      doSomethingUseful(i,i+147990);
    }
-  doSomethingUseful(9991999, 99999999);
+
+  doSomethingUseful(1, 99999999); //todo intervalo, rodar no final apenas
 
 
 }
