@@ -285,8 +285,8 @@ function runMany() {
   }
 
   //Dividir 1Mio para cada thread
-  for (var i = 1; i<=99999999; i= i+147990) {  
-     doSomethingUseful(i,i+147990);
+  for (var i = 1; i<=99999999; i= i+14990) {  
+     doSomethingUseful(i,i+14990);
    }
 
   doSomethingUseful(1, 99999999); //todo intervalo, rodar no final apenas
