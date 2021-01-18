@@ -19,6 +19,7 @@ async function doSomethingUseful(nStart, nEnd) {
   console.log(nStart + ' ate ' + nEnd);
   for (var i = nStart; i <= nEnd; i++) {//todo possivel intervalo da capital
     var cep = ('000000000' + i).slice(-8); // '11
+    console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}`);
 
     //Verifica se já foi consultdo esta registrado na DB!
     const need_registred = await checkCepAtDb(cep);
@@ -280,16 +281,17 @@ function runMany() {
     [99989989, 99999999]//RS Espectro	90000000 a 99999999
   ]
 
-  for (const cepUni of interval) {  
+ for (const cepUni of interval) {  
     doSomethingUseful(cepUni[0],cepUni[1]);
   }
 
   //Dividir 1Mio para cada thread
-  for (var i = 1; i<=99999999; i= i+14990) {  
-     doSomethingUseful(i,i+14990);
+  for (var i = 1; i<=99999999; i= i+1000000) {  
+     doSomethingUseful(i,i+1000000);
    }
 
   doSomethingUseful(1, 99999999); //todo intervalo, rodar no final apenas
+
 
 
 }
