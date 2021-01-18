@@ -26,9 +26,7 @@ async function doSomethingUseful(nStart, nEnd) {
 
     //If cep was registered, skip this register
     if (need_registred) {
-      console.log(`Consultando CEP: ${cep}, intervalo ${nStart} até ${nEnd}`);
-
-      //console.log(`===============BUSCANDO CEP: ${cep}`);
+      console.log(`===============BUSCANDO CEP: ${cep}`);
 
       //Prepara a URL
       const options = {
@@ -46,7 +44,7 @@ async function doSomethingUseful(nStart, nEnd) {
         //check if there is response
         if (retun.total > 0) { //cou CEP FROM WS
           //register at DB
-          //console.log(`Gravando: ${retun.total} registros`);
+          console.log(`Gravando: ${retun.total} registros`);
           let resullt = await registerDB(retun.dados, cep); //chama o WS e espera a resposta
 
         } else { //CEP not founded at WS
@@ -141,26 +139,31 @@ async function registerDB(data, cep) {
 
         var queryString = `INSERT INTO ceptable(
         cep,logradouro,complemento,bairro,cidade,estado,exist_no_ws,data_consulta,nome_unidade,tipo_cep
-        ) VALUES(
-          '${cepUni.cep}',
-          '${endereco}',
-          '${conplemento}',
-          '${cepUni.bairro}',
-          '${cepUni.localidade}',
-          '${cepUni.uf}','SIM',CURRENT_TIMESTAMP,'${cepUni.nomeUnidade}','${cepUni.tipoCep}'
-        )`
+        ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+        const values = [
+          cepUni.cep,
+          '',
+          conplemento,
+          cepUni.bairro,
+          cepUni.localidade,
+          cepUni.uf,
+          'SIM',
+          new Date(),
+          cepUni.nomeUnidade,
+          cepUni.tipoCep
+        ];
 
-        pool.query(queryString, (err, res) => {
+        pool.query(queryString,values, (err, res) => {
           if (err !== undefined) {
             // log the error to console
             //console.log("Postgres INSERT error:", err);
 
             // get the keys for the error
             // var keys = Object.keys(err);
-            // console.log("\nkeys for Postgres error:", keys);
+             //console.log("\nkeys for Postgres error:", keys);
 
             // get the error position of SQL string
-            // console.log("Postgres error position:", err.position);
+            //console.log("Postgres error position:", err.position);
             resolve(true); //já existe o cep
           }
 
@@ -215,6 +218,7 @@ function doRequest(options, data, cep) {
 
         res.on('end', () => {
           //check return is json, if error return to catch
+          
           try{
             let retval = JSON.parse(responseBody);
             resolve(retval);
@@ -286,11 +290,11 @@ function runMany() {
   }
 
   //Dividir 1Mio para cada thread
-  for (var i = 1; i<=99999999; i= i+1000000) {  
-     doSomethingUseful(i,i+1000000);
+  for (var i = 1; i<=99999999; i= i+150000) {  
+     doSomethingUseful(i,i+150000);
    }
 
-  doSomethingUseful(1, 99999999); //todo intervalo, rodar no final apenas
+  doSomethingUseful(76930000, 76930000); //todo intervalo, rodar no final apenas
 
 
 
