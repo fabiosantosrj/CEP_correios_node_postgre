@@ -35,14 +35,17 @@ CREATE TABLE ceptable
   tipo_cep character varying, -- Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade
   CONSTRAINT ceptable_pk PRIMARY KEY (cep)
 )
+
 WITH (
   OIDS=FALSE
 );
+
 ALTER TABLE ceptable
   OWNER TO postgres;
 COMMENT ON COLUMN ceptable.exist_no_ws IS 'CEP exist no WS do correio?';
 COMMENT ON COLUMN ceptable.nome_unidade IS 'NOme da Unidade/predio';
 COMMENT ON COLUMN ceptable.tipo_cep IS 'Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade';
+
 
 
 -para executar, digitar no terminal 
