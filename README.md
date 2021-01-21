@@ -12,23 +12,28 @@ Para rodar será necessário:
 
 -- DROP TABLE ceptable;
 
+______________
+
 CREATE TABLE ceptable
 (
-cep character varying NOT NULL,
-logradouro character varying,
-bairro character varying,
-cidade character varying,
-estado character varying,
-complemento character varying,
-exist_no_ws character varying, -- CEP exist no WS do correio?
-data_consulta timestamp(0) without time zone,
-nome_unidade character varying, -- NOme da Unidade/predio
-tipo_cep character varying, -- Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade
-CONSTRAINT ceptable_pk PRIMARY KEY (cep)
+    cep character varying NOT NULL,
+    logradouro character varying,
+    bairro character varying,
+    cidade character varying,
+    estado character varying,
+    complemento character varying,
+    exist_no_ws character varying, -- CEP exist no WS do correio?
+    data_consulta timestamp(0) without time zone,
+    nome_unidade character varying, -- NOme da Unidade/predio
+    tipo_cep character varying, -- Tipo de cep, 5=Unidade(predio), 2=Rua, 1=Cidade
+    CONSTRAINT ceptable_pk PRIMARY KEY (cep)
 )
 WITH (
 OIDS=FALSE
 );
+
+________________
+
 ALTER TABLE ceptable
 OWNER TO postgres;
 COMMENT ON COLUMN ceptable.exist_no_ws IS 'CEP exist no WS do correio?';
